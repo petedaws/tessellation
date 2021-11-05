@@ -5,14 +5,21 @@ import random
 WHITE=(255,255,255)
 BLACK=(0,0,0)
 
-TICK_RATE = 20
+TICK_RATE = 1
 SCREEN_HEIGHT = 800
 SCREEN_WIDTH = 400
 POINT_SIZE = 2
 
-MAX_RAND = 20
+MAX_RAND = 60
+VERTEX_LENGTH = 10
 
-shape_verticies = [(int(SCREEN_WIDTH/2),int(SCREEN_HEIGHT/2))]
+def get_random_vertex_list():
+    ref_point = (int(SCREEN_WIDTH/2),int(SCREEN_HEIGHT/2))
+    shape_verticies = [ref_point]
+    for i in range(VERTEX_LENGTH):
+        shape_verticies.append(get_random_point(ref_point))
+    return shape_verticies
+        
 
 def get_random_point(ref_point):
     return (ref_point[0]+random.randint(-MAX_RAND,MAX_RAND),ref_point[1]+random.randint(-MAX_RAND,MAX_RAND))
@@ -20,6 +27,9 @@ def get_random_point(ref_point):
 def draw_verticies(display,input_vector):
     for i,point in enumerate(input_vector):
         pygame.draw.circle(display,BLACK,point,POINT_SIZE)
+        
+def draw_lines(display,input_vector):
+    for i,point in enumerate(input_vector):
         pygame.draw.line(display,BLACK,point,input_vector[i-1])
     
 def main():
@@ -30,14 +40,30 @@ def main():
     DISPLAY=pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT),0,32)
     DISPLAY.fill(WHITE)
 
+    vertex_list = []
+    
+    do_draw_lines = False
+    
     while True:
         for event in pygame.event.get():
             if event.type==QUIT:
                 pygame.quit()
                 sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    vertex_list = get_random_vertex_list()
+                if event.key == pygame.K_w:
+                    if do_draw_lines:
+                        do_draw_lines = False
+                    else:
+                        do_draw_lines = True
+                    
         DISPLAY.fill(WHITE)
-        shape_verticies.append(get_random_point(shape_verticies[-1]))
-        draw_verticies(DISPLAY,shape_verticies)
+        
+        draw_verticies(DISPLAY,vertex_list)
+        if do_draw_lines:
+            draw_lines(DISPLAY,vertex_list)
+            
         pygame.display.update()
         clock.tick(TICK_RATE)
 
