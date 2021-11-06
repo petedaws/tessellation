@@ -26,6 +26,11 @@ def print_points(display,input_vector):
     for i,point in enumerate(input_vector):
         display.blit(font.render(f'({point[0]}),({point[1]})', True, (0,0,0)), (0, font_size*i))
 
+def get_left_most_point(input_vector):
+    for point in input_vector:
+        if point[0]:
+            pass
+
 def get_random_point(ref_point):
     return (ref_point[0]+random.randint(-MAX_RAND,MAX_RAND),ref_point[1]+random.randint(-MAX_RAND,MAX_RAND))
 
