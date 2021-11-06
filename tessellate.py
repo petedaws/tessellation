@@ -6,7 +6,7 @@ WHITE=(255,255,255)
 BLACK=(0,0,0)
 
 TICK_RATE = 1
-SCREEN_HEIGHT = 800
+SCREEN_HEIGHT = 400
 SCREEN_WIDTH = 400
 POINT_SIZE = 2
 
@@ -20,6 +20,11 @@ def get_random_vertex_list():
         shape_verticies.append(get_random_point(ref_point))
     return shape_verticies
         
+def print_points(display,input_vector):
+    font_size=15
+    font = pygame.font.SysFont('Arial', font_size)
+    for i,point in enumerate(input_vector):
+        display.blit(font.render(f'({point[0]}),({point[1]})', True, (0,0,0)), (0, font_size*i))
 
 def get_random_point(ref_point):
     return (ref_point[0]+random.randint(-MAX_RAND,MAX_RAND),ref_point[1]+random.randint(-MAX_RAND,MAX_RAND))
@@ -63,7 +68,7 @@ def main():
         draw_verticies(DISPLAY,vertex_list)
         if do_draw_lines:
             draw_lines(DISPLAY,vertex_list)
-            
+        print_points(DISPLAY,vertex_list)
         pygame.display.update()
         clock.tick(TICK_RATE)
 
