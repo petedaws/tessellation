@@ -19,6 +19,41 @@ def get_random_vertex_list():
     for i in range(VERTEX_LENGTH):
         shape_verticies.append(get_random_point(ref_point))
     return shape_verticies
+    
+def get_m_c(line):
+    x0,y0 = line[0]
+    x1,y1 = line[1]
+    m = (y1-y0)/(x1-x0)
+    c = y0 - m*x0
+    return m, c
+    
+def get_intersect(line0,line1):
+    # gets the intersection of two lines
+    m0,c0 = get_m_c(line0)
+    m1,c1 = get_m_c(line1)
+    
+    x = (c1-c0)/(m0-m1)
+    y = m0*x+c0
+    return x,y
+    
+def check_float_between_two_numbers(check,num0,num1):
+    a = num0 <= check <= num1
+    b = num1 <= check <= num0
+    return a or b
+
+def check_intersect(line0,line1):
+    # checks if the intersection point lies on one of the lines
+    m0,c0 = get_m_c(line0)
+    x00,y00 = line0[0]
+    x01,y01 = line0[1]
+    x10,y10 = line1[0]
+    x11,y11 = line1[1]
+    xi,yi = get_intersect(line0,line1)
+    a = check_float_between_two_numbers(xi,x00,x01)
+    b = check_float_between_two_numbers(yi,y00,y01)
+    c = check_float_between_two_numbers(xi,x10,x11)
+    d = check_float_between_two_numbers(yi,y10,y11)    
+    return a and b and c and d
         
 def print_points(display,input_vector):
     font_size=15
